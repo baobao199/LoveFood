@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "461957417140",
+    "firebase_url": "https://lovefood-1532e.firebaseio.com",
+    "project_id": "lovefood-1532e",
+    "storage_bucket": "lovefood-1532e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461957417140:android:493ef2cab231e998",
+        "android_client_info": {
+          "package_name": "com.example.lovefood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461957417140-op7a1ps17bdbgjdqsg7lscoa0uvnri6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lovefood",
+            "certificate_hash": "b97e5e75625dfebb564fdd7f6f1cb42ab67d3b6e"
+          }
+        },
+        {
+          "client_id": "461957417140-796t8rrd85j96hllg6tq3ag37bm7fhpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkYyClEB8DsnLTFxBhRgqZwpyBousk-9E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461957417140-796t8rrd85j96hllg6tq3ag37bm7fhpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
