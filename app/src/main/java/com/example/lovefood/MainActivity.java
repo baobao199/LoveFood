@@ -1,33 +1,31 @@
 package com.example.lovefood;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btLogin;
-    private Button btRegister;
-
+    private Toolbar mainToolbar;
+    private ViewPager mviewPager;
+    private TabLayout myTablayout;
+    private TabsAccessorAdapter tabsAccessorAdapter;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btLogin = findViewById(R.id.btLogin);
-        btRegister = findViewById(R.id.btRegister);
+        mainToolbar=findViewById(R.id.main_tool_bar);
 
-        btLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        setSupportActionBar(mainToolbar);
+        getSupportActionBar().setTitle("Love Food");
 
-            }
-        });
+        mviewPager = findViewById(R.id.main_tabs_pager);
+        tabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
+        mviewPager.setAdapter(tabsAccessorAdapter);
 
-        btRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        myTablayout=findViewById(R.id.main_tabs);
+        myTablayout.setupWithViewPager(mviewPager);
     }
 }
