@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mviewPager;
     private TabLayout myTablayout;
     private TabsAccessorAdapter tabsAccessorAdapter;
-
+    private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
     @Override
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle("Love Food");
-
+        mAuth = FirebaseAuth.getInstance();
+        currentUser =mAuth.getCurrentUser();
         mviewPager = findViewById(R.id.main_tabs_pager);
         tabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
         mviewPager.setAdapter(tabsAccessorAdapter);
