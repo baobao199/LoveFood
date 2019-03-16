@@ -19,11 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
-            android:id="@+id/etName"
+            android:id="@+id/etEmail"
             android:layout_gravity="center"
             android:ems="15"
             android:paddingTop="30dp"
-            android:hint="Name"
+            android:hint="Email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
@@ -32,6 +32,14 @@
             android:ems="15"
             android:paddingTop="30dp"
             android:hint="Phone Number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_gravity="center"
+            android:ems="15"
+            android:paddingTop="30dp"
+            android:hint="Address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
