@@ -27,5 +27,16 @@ public class MainActivity extends AppCompatActivity {
 
         myTablayout=findViewById(R.id.main_tabs);
         myTablayout.setupWithViewPager(mviewPager);
+        final int[] ICONS = new int[]{
+                R.drawable.account,
+                R.drawable.home,
+                R.drawable.cart
+        };
+
+        //Get reference to your Tablayout
+
+        myTablayout.getTabAt(0).setIcon(ICONS[0]);
+        myTablayout.getTabAt(1).setIcon(ICONS[1]);
+        myTablayout.getTabAt(2).setIcon(ICONS[2]);
     }
 }

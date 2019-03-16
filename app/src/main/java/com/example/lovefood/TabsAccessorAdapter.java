@@ -19,6 +19,9 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
             case 1:
                 Account account = new Account();
                 return account;
+            case 2:
+                CartFragment cartFragment = new CartFragment();
+                return cartFragment;
             default:
                 return null;
         }
@@ -26,7 +29,7 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Nullable
@@ -37,6 +40,8 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
                 return "Order Page";
             case 1:
                 return "Account Profile";
+            case 2:
+                return "Your Cart";
             default:
                 return null;
         }
