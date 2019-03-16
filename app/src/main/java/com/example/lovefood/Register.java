@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
     private EditText etEmail;
@@ -23,6 +25,7 @@ public class Register extends AppCompatActivity {
     private EditText etAddress;
     private Button btRegister1;
     private FirebaseAuth mAuth;
+    private DatabaseReference UserRef;
     private ProgressDialog loading;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void CreateNewAccount() {
-        String email,phoneNumber,address,password;
+        final String email,phoneNumber,address,password;
         email=etEmail.getText().toString();
         phoneNumber=etPhone2.getText().toString();
         address=etAddress.getText().toString();
@@ -70,6 +73,11 @@ public class Register extends AppCompatActivity {
                                 {
                                     SendUserToMain();
                                     Toast.makeText(Register.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
+
+                                    UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
+                                    UserRef.child("emailUser").setValue(email);
+                                    UserRef.child("phoneNumber").setValue(phoneNumber);
+                                    UserRef.child("address").setValue(address);
                                     loading.dismiss();
                                 }
                                 else{
