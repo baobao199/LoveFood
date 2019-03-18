@@ -17,11 +17,11 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
                 OrderFragment orderFragment = new OrderFragment();
                 return orderFragment;
             case 1:
-                Account account = new Account();
-                return account;
-            case 2:
                 CartFragment cartFragment = new CartFragment();
                 return cartFragment;
+            case 2:
+                Account account = new Account();
+                return account;
             default:
                 return null;
         }
