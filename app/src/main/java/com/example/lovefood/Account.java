@@ -1,23 +1,37 @@
 package com.example.lovefood;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -26,10 +40,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Account extends Fragment {
     private View AccountView;
     private DatabaseReference UserRef;
+    private String currentUserID;
     private FirebaseAuth mAuth;
     private CircleImageView imageUser;
+    private ProgressDialog loadingBar;
     private TextView Gmail,Phone,Address;
-    private static final int GalleryPick = 1;
+    private static final int MyPick = 2;
+    private StorageReference UserProfileImageRef;
     public Account() {
         // Required empty public constructor
     }
@@ -46,13 +63,17 @@ public class Account extends Fragment {
         Address =AccountView.findViewById(R.id.address);
         mAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        UserProfileImageRef= FirebaseStorage.getInstance().getReference().child("Profile Images");
+        currentUserID=mAuth.getCurrentUser().getUid();
+        loadingBar =new ProgressDialog(getContext());
+
         imageUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent galleryIntent = new Intent();
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, GalleryPick);
+                startActivityForResult(galleryIntent, MyPick);
             }
         });
         return AccountView;
@@ -70,9 +91,11 @@ public class Account extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
                 {
-                        Gmail.setText("Gmail:"+ dataSnapshot.child("emailUser").getValue().toString());
-                        Phone.setText("Phone:"+dataSnapshot.child("phoneNumber").getValue().toString());
-                        Address.setText("Address:"+dataSnapshot.child("address").getValue().toString());
+                        Gmail.setText("Gmail:"+ dataSnapshot.child(currentUserID).child("emailUser").getValue().toString());
+                        Phone.setText("Phone:"+dataSnapshot.child(currentUserID).child("phoneNumber").getValue().toString());
+                        Address.setText("Address:"+dataSnapshot.child(currentUserID).child("address").getValue().toString());
+                        String retriveProfileImage = dataSnapshot.child(currentUserID).child("image").getValue().toString();
+                        Picasso.get().load(retriveProfileImage).placeholder(R.drawable.account).into(imageUser);
                 }
 
             }
@@ -87,9 +110,43 @@ public class Account extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == GalleryPick && data != null && data.getData() != null)
+        if(requestCode == MyPick && resultCode == RESULT_OK && data != null && data.getData() != null)
         {
+            Uri ImageUri = data.getData();
+            loadingBar.setTitle("Set Profile Image");
+            loadingBar.setMessage("Please wait ,your  profile image is updating....");
+            loadingBar.setCanceledOnTouchOutside(false);
+            loadingBar.show();
+            if (ImageUri != null) {
+                StorageReference filePath = UserProfileImageRef.child(currentUserID + ".jpg");
 
+                filePath.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Profile Image uploaded Successfully...", Toast.LENGTH_SHORT).show();
+                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
+                            UserRef.child(currentUserID).child("image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Image save in Database Successfully.....", Toast.LENGTH_SHORT).show();
+                                        loadingBar.dismiss();
+                                    } else {
+                                        String message = task.getException().toString();
+                                        Toast.makeText(getContext(), "Error" + message, Toast.LENGTH_SHORT).show();
+                                        loadingBar.dismiss();
+                                    }
+                                }
+                            });
+                        } else {
+                            String message = task.getException().toString();
+                            Toast.makeText(getActivity(), "Error :" + message, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                });
+            }
         }
     }
 }

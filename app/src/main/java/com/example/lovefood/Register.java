@@ -73,11 +73,11 @@ public class Register extends AppCompatActivity {
                                 {
                                     SendUserToMain();
                                     Toast.makeText(Register.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
-
+                                    String currentUserID = mAuth.getCurrentUser().getUid();
                                     UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
-                                    UserRef.child("emailUser").setValue(email);
-                                    UserRef.child("phoneNumber").setValue(phoneNumber);
-                                    UserRef.child("address").setValue(address);
+                                    UserRef.child(currentUserID).child("emailUser").setValue(email);
+                                    UserRef.child(currentUserID).child("phoneNumber").setValue(phoneNumber);
+                                    UserRef.child(currentUserID).child("address").setValue(address);
                                     loading.dismiss();
                                 }
                                 else{
