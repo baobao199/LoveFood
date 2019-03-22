@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +33,7 @@ import com.squareup.picasso.Picasso;
 public class OrderFragment extends Fragment {
     private View OrderFragmentView;
     private RecyclerView orderList;
-    private DatabaseReference FoodRef,UserRef;
+    private DatabaseReference FoodRef,UserRef,OrderRef,OrderKeyRef;
     private FirebaseAuth mAuth;
     private String currentUser;
     public OrderFragment() {
@@ -45,6 +47,7 @@ public class OrderFragment extends Fragment {
         // Inflate the layout for this fragment
         OrderFragmentView =inflater.inflate(R.layout.fragment_order, container, false);
         FoodRef = FirebaseDatabase.getInstance().getReference().child("Foods");
+        OrderRef =FirebaseDatabase.getInstance().getReference().child("Orders");
         orderList = OrderFragmentView.findViewById(R.id.orderList);
         orderList.setLayoutManager(new LinearLayoutManager(getContext()));
         mAuth = FirebaseAuth.getInstance();
@@ -64,17 +67,32 @@ public class OrderFragment extends Fragment {
                 new FirebaseRecyclerAdapter<Foods, ContactsViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, final int position, @NonNull Foods model) {
-                            String nameFoods=getRef(position).getKey();
+                            final String nameFoods=getRef(position).getKey();
                             FoodRef.child(nameFoods).addValueEventListener(new ValueEventListener() {
                                 @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                     String imageFood=dataSnapshot.child("link").getValue().toString();
-                                     String nameFood=dataSnapshot.child("name").getValue().toString();
+                                public void onDataChange(final DataSnapshot dataSnapshot) {
+                                     final String imageFood=dataSnapshot.child("link").getValue().toString();
+                                     final String nameFood=dataSnapshot.child("name").getValue().toString();
                                      String priceFood=dataSnapshot.child("price").getValue().toString();
 
                                      holder.nameFoods.setText(nameFood);
                                      holder.tvPrice.setText(priceFood);
                                      Picasso.get().load(imageFood).into(holder.imageFoods);
+                                     holder.btOrder.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             if(Integer.parseInt(holder.etQuantum.getText().toString()) >= 1)
+                                             {
+                                                 OrderKeyRef = OrderRef.child(currentUser).child("Food Ordered").child(nameFoods);
+                                                 OrderKeyRef
+                                                         .child("name").setValue(nameFood);
+                                                 OrderKeyRef
+                                                         .child("link").setValue(imageFood);
+                                                 OrderKeyRef
+                                                         .child("quantum").setValue(holder.etQuantum.getText().toString());
+                                             }
+                                         }
+                                     });
                                 }
 
                                 @Override
