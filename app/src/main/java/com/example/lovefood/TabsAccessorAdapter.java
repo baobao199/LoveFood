@@ -39,9 +39,9 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
             case 0:
                 return "Order Page";
             case 1:
-                return "Account Profile";
-            case 2:
                 return "Your Cart";
+            case 2:
+                return "Account Profile";
             default:
                 return null;
         }
