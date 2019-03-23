@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -90,6 +91,7 @@ public class OrderFragment extends Fragment {
                                                          .child("link").setValue(imageFood);
                                                  OrderKeyRef
                                                          .child("quantum").setValue(holder.etQuantum.getText().toString());
+                                                 Toast.makeText(getContext(), "Order Successfully.....", Toast.LENGTH_SHORT).show();
                                              }
                                          }
                                      });
