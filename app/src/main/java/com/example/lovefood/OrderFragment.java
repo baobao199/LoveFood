@@ -69,12 +69,13 @@ public class OrderFragment extends Fragment {
                     @Override
                     protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, final int position, @NonNull Foods model) {
                             final String nameFoods=getRef(position).getKey();
+                            holder.etQuantum.setVisibility(View.VISIBLE);
                             FoodRef.child(nameFoods).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(final DataSnapshot dataSnapshot) {
                                      final String imageFood=dataSnapshot.child("link").getValue().toString();
                                      final String nameFood=dataSnapshot.child("name").getValue().toString();
-                                     String priceFood=dataSnapshot.child("price").getValue().toString();
+                                     final String priceFood=dataSnapshot.child("price").getValue().toString();
 
                                      holder.nameFoods.setText(nameFood);
                                      holder.tvPrice.setText(priceFood);
@@ -84,11 +85,14 @@ public class OrderFragment extends Fragment {
                                          public void onClick(View v) {
                                              if(Integer.parseInt(holder.etQuantum.getText().toString()) >= 1)
                                              {
+                                                 int totalPrice = Integer.parseInt(priceFood) * Integer.parseInt(holder.etQuantum.getText().toString());
                                                  OrderKeyRef = OrderRef.child(currentUser).child("Food Ordered").child(nameFoods);
                                                  OrderKeyRef
                                                          .child("name").setValue(nameFood);
                                                  OrderKeyRef
                                                          .child("link").setValue(imageFood);
+                                                 OrderKeyRef
+                                                         .child("price").setValue(Integer.toString(totalPrice));
                                                  OrderKeyRef
                                                          .child("quantum").setValue(holder.etQuantum.getText().toString());
                                                  Toast.makeText(getContext(), "Order Successfully.....", Toast.LENGTH_SHORT).show();
