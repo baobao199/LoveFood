@@ -94,8 +94,12 @@ public class Account extends Fragment {
                         Gmail.setText("Gmail:"+ dataSnapshot.child(currentUserID).child("emailUser").getValue().toString());
                         Phone.setText("Phone:"+dataSnapshot.child(currentUserID).child("phoneNumber").getValue().toString());
                         Address.setText("Address:"+dataSnapshot.child(currentUserID).child("address").getValue().toString());
-                        String retriveProfileImage = dataSnapshot.child(currentUserID).child("image").getValue().toString();
-                        Picasso.get().load(retriveProfileImage).placeholder(R.drawable.account).into(imageUser);
+                        if(dataSnapshot.child(currentUserID).child("image").exists()){
+                            String retriveProfileImage = dataSnapshot.child(currentUserID).child("image").getValue().toString();
+                            Picasso.get().load(retriveProfileImage).placeholder(R.drawable.account).into(imageUser);
+                        }
+
+
                 }
 
             }
