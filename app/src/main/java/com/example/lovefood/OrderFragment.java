@@ -66,7 +66,6 @@ public class OrderFragment extends Fragment {
         {
 
             currentUser = mAuth.getCurrentUser().getUid();
-            OrderRef =FirebaseDatabase.getInstance().getReference().child("Orders").child(currentUser).child("Food Ordered");
         }
     }
 

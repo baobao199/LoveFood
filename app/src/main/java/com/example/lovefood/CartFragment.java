@@ -72,8 +72,6 @@ public class CartFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(OrderRef!=null)
-        {
             FirebaseRecyclerOptions options =
                     new FirebaseRecyclerOptions.Builder<FoodOrdered>()
                             .setQuery(OrderRef,FoodOrdered.class)
@@ -87,14 +85,17 @@ public class CartFragment extends Fragment {
                     OrderRef.child(nameFoods).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            final String imageFood=dataSnapshot.child("link").getValue().toString();
-                            final String nameFood=dataSnapshot.child("name").getValue().toString();
-                            final String quantumFood=dataSnapshot.child("quantum").getValue().toString();
-                            final String priceFood=dataSnapshot.child("price").getValue().toString();
-                            holder.nameFoods.setText(nameFood);
-                            holder.tvQuantum.setText(quantumFood);
-                            holder.tvPrice.setText(priceFood);
-                            Picasso.get().load(imageFood).into(holder.imageFoods);
+                            if(dataSnapshot.exists())
+                            {
+                                final String imageFood=dataSnapshot.child("link").getValue().toString();
+                                final String nameFood=dataSnapshot.child("name").getValue().toString();
+                                final String quantumFood=dataSnapshot.child("quantum").getValue().toString();
+                                final String priceFood=dataSnapshot.child("price").getValue().toString();
+                                holder.nameFoods.setText(nameFood);
+                                holder.tvQuantum.setText(quantumFood);
+                                holder.tvPrice.setText(priceFood);
+                                Picasso.get().load(imageFood).placeholder(R.drawable.account).into(holder.imageFoods);
+                            }
                         }
 
                         @Override
@@ -115,7 +116,6 @@ public class CartFragment extends Fragment {
 
             cartList.setAdapter(adapter);
             adapter.startListening();
-        }
     }
     public static class CartViewHolder extends RecyclerView.ViewHolder{
         TextView nameFoods,tvPrice,tvQuantum;

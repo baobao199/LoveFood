@@ -68,7 +68,6 @@ public class Account extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        RetrieveUserInto();
     }
 
     @Override
@@ -80,6 +79,8 @@ public class Account extends Fragment {
         if(mAuth.getCurrentUser() != null)
         {
             currentUserID = mAuth.getCurrentUser().getUid();
+
+            RetrieveUserInto();
         }
         loadingBar =new ProgressDialog(getContext());
 
