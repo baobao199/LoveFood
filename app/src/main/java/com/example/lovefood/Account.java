@@ -106,7 +106,7 @@ public class Account extends Fragment {
                         Address.setText("Address:"+dataSnapshot.child(currentUserID).child("address").getValue().toString());
                         if(dataSnapshot.child(currentUserID).child("image").exists()){
                             String retriveProfileImage = dataSnapshot.child(currentUserID).child("image").getValue().toString();
-                            Picasso.get().load(retriveProfileImage).placeholder(R.drawable.account).into(imageUser);
+                            Picasso.get().load(retriveProfileImage).placeholder(R.drawable.account3).into(imageUser);
                         }
 
 

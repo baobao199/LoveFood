@@ -72,29 +72,29 @@ public class CartFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if(OrderRef!=null) {
             FirebaseRecyclerOptions options =
                     new FirebaseRecyclerOptions.Builder<FoodOrdered>()
-                            .setQuery(OrderRef,FoodOrdered.class)
+                            .setQuery(OrderRef, FoodOrdered.class)
                             .build();
-            FirebaseRecyclerAdapter<FoodOrdered,CartViewHolder> adapter = new FirebaseRecyclerAdapter<FoodOrdered, CartViewHolder>(options) {
+            FirebaseRecyclerAdapter<FoodOrdered, CartViewHolder> adapter = new FirebaseRecyclerAdapter<FoodOrdered, CartViewHolder>(options) {
                 @Override
                 protected void onBindViewHolder(@NonNull final CartViewHolder holder, int position, @NonNull FoodOrdered model) {
-                    final String nameFoods=getRef(position).getKey();
+                    final String nameFoods = getRef(position).getKey();
                     holder.tvQuantum.setVisibility(View.VISIBLE);
                     holder.btOrder.setVisibility(View.GONE);
                     OrderRef.child(nameFoods).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists())
-                            {
-                                final String imageFood=dataSnapshot.child("link").getValue().toString();
-                                final String nameFood=dataSnapshot.child("name").getValue().toString();
-                                final String quantumFood=dataSnapshot.child("quantum").getValue().toString();
-                                final String priceFood=dataSnapshot.child("price").getValue().toString();
+                            if (dataSnapshot.exists()) {
+                                final String imageFood = dataSnapshot.child("link").getValue().toString();
+                                final String nameFood = dataSnapshot.child("name").getValue().toString();
+                                final String quantumFood = dataSnapshot.child("quantum").getValue().toString();
+                                final String priceFood = dataSnapshot.child("price").getValue().toString();
                                 holder.nameFoods.setText(nameFood);
                                 holder.tvQuantum.setText(quantumFood);
                                 holder.tvPrice.setText(priceFood);
-                                Picasso.get().load(imageFood).placeholder(R.drawable.account).into(holder.imageFoods);
+                                Picasso.get().load(imageFood).placeholder(R.drawable.account3).into(holder.imageFoods);
                             }
                         }
 
@@ -108,7 +108,7 @@ public class CartFragment extends Fragment {
                 @NonNull
                 @Override
                 public CartViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                    View view =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.foods_display_list,viewGroup,false);
+                    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.foods_display_list, viewGroup, false);
                     CartFragment.CartViewHolder viewHolder = new CartFragment.CartViewHolder(view);
                     return viewHolder;
                 }
@@ -116,6 +116,7 @@ public class CartFragment extends Fragment {
 
             cartList.setAdapter(adapter);
             adapter.startListening();
+        }
     }
     public static class CartViewHolder extends RecyclerView.ViewHolder{
         TextView nameFoods,tvPrice,tvQuantum;

@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
         myTablayout = findViewById(R.id.main_tabs);
         myTablayout.setupWithViewPager(mviewPager);
         final int[] ICONS = new int[]{
-                R.drawable.home,
-                R.drawable.cart,
-                R.drawable.account
+                R.drawable.home2,
+                R.drawable.payment,
+                R.drawable.account3
         };
 
         //Get reference to your Tablayout
