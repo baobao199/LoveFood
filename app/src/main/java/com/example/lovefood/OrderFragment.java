@@ -1,8 +1,10 @@
 package com.example.lovefood;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,14 +49,25 @@ public class OrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         OrderFragmentView =inflater.inflate(R.layout.fragment_order, container, false);
-        FoodRef = FirebaseDatabase.getInstance().getReference().child("Foods");
-        OrderRef =FirebaseDatabase.getInstance().getReference().child("Orders");
         orderList = OrderFragmentView.findViewById(R.id.orderList);
         orderList.setLayoutManager(new LinearLayoutManager(getContext()));
+        return OrderFragmentView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        FoodRef = FirebaseDatabase.getInstance().getReference().child("Foods");
+        OrderRef =FirebaseDatabase.getInstance().getReference().child("Orders");
         mAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        currentUser = mAuth.getCurrentUser().getUid();
-        return OrderFragmentView;
+
+        if(mAuth.getCurrentUser() != null)
+        {
+
+            currentUser = mAuth.getCurrentUser().getUid();
+            OrderRef =FirebaseDatabase.getInstance().getReference().child("Orders").child(currentUser).child("Food Ordered");
+        }
     }
 
     @Override

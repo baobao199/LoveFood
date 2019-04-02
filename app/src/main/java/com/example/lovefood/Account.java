@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,10 +62,25 @@ public class Account extends Fragment {
         Gmail = AccountView.findViewById(R.id.gmailUser);
         Phone =AccountView.findViewById(R.id.sdt);
         Address =AccountView.findViewById(R.id.address);
+        return AccountView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        RetrieveUserInto();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         UserProfileImageRef= FirebaseStorage.getInstance().getReference().child("Profile Images");
-        currentUserID=mAuth.getCurrentUser().getUid();
+        if(mAuth.getCurrentUser() != null)
+        {
+            currentUserID = mAuth.getCurrentUser().getUid();
+        }
         loadingBar =new ProgressDialog(getContext());
 
         imageUser.setOnClickListener(new View.OnClickListener() {
@@ -76,13 +92,6 @@ public class Account extends Fragment {
                 startActivityForResult(galleryIntent, MyPick);
             }
         });
-        return AccountView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        RetrieveUserInto();
     }
 
     private void RetrieveUserInto() {
