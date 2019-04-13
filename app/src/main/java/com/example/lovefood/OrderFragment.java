@@ -82,6 +82,8 @@ public class OrderFragment extends Fragment {
                     protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, final int position, @NonNull Foods model) {
                             final String nameFoods=getRef(position).getKey();
                             holder.etQuantum.setVisibility(View.VISIBLE);
+                            holder.ibAdd.setVisibility(View.VISIBLE);
+                            holder.ibSubtract.setVisibility(View.VISIBLE);
                             FoodRef.child(nameFoods).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -92,6 +94,27 @@ public class OrderFragment extends Fragment {
                                      holder.nameFoods.setText(nameFood);
                                      holder.tvPrice.setText(priceFood);
                                      Picasso.get().load(imageFood).into(holder.imageFoods);
+
+                                     holder.ibAdd.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                                 holder.etQuantum.setText(Integer.toString(Integer.parseInt(holder.etQuantum.getText().toString())+1));
+                                         }
+                                     });
+
+                                     holder.ibSubtract.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v) {
+                                             if(Integer.parseInt(holder.etQuantum.getText().toString()) < 1)
+                                             {
+                                                 holder.etQuantum.setText(Integer.toString(0));
+                                             }
+                                             else{
+                                                 holder.etQuantum.setText(Integer.toString(Integer.parseInt(holder.etQuantum.getText().toString())-1));
+                                             }
+                                         }
+                                     });
+
                                      holder.btOrder.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
@@ -139,6 +162,7 @@ public class OrderFragment extends Fragment {
         ImageView imageFoods;
         EditText etQuantum;
         Button btOrder;
+        ImageView ibAdd,ibSubtract;
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
             nameFoods = itemView.findViewById(R.id.nameOfFoods);
@@ -146,6 +170,8 @@ public class OrderFragment extends Fragment {
             etQuantum = itemView.findViewById(R.id.etQuantum);
             btOrder = itemView.findViewById(R.id.btOrder);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            ibAdd = itemView.findViewById(R.id.ibAdd);
+            ibSubtract = itemView.findViewById(R.id.ibSubtract);
         }
     }
 }
