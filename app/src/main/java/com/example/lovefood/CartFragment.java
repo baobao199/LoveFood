@@ -94,7 +94,6 @@ public class CartFragment extends Fragment {
                                 holder.nameFoods.setText(nameFood);
                                 holder.tvQuantum.setText(quantumFood);
                                 holder.tvPrice.setText(priceFood);
-                                holder.tvCount.setText(Integer.parseInt(holder.tvCount.getText().toString())+Integer.parseInt(quantumFood));
                                 Picasso.get().load(imageFood).placeholder(R.drawable.account3).into(holder.imageFoods);
                             }
                         }
@@ -124,7 +123,6 @@ public class CartFragment extends Fragment {
         ImageView imageFoods;
         EditText etQuantum;
         Button btOrder;
-        TextView tvCount;
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
             nameFoods = itemView.findViewById(R.id.nameOfFoods);
@@ -133,7 +131,7 @@ public class CartFragment extends Fragment {
             btOrder = itemView.findViewById(R.id.btOrder);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvQuantum = itemView.findViewById(R.id.tvQuantum);
-           tvCount = itemView.findViewById(R.id.tvCount);
+
         }
     }
 }
