@@ -74,6 +74,8 @@
             <Button
                 android:id="@+id/btOrder"
                 android:text="Order"
+                android:background="#FF0000
+"
                 android:layout_gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

@@ -82,7 +82,13 @@ public class CartFragment extends Fragment {
                 protected void onBindViewHolder(@NonNull final CartViewHolder holder, int position, @NonNull FoodOrdered model) {
                     final String nameFoods = getRef(position).getKey();
                     holder.tvQuantum.setVisibility(View.VISIBLE);
-                    holder.btOrder.setVisibility(View.GONE);
+                    holder.btOrder.setText("Cancel");
+                    holder.btOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            OrderRef.child(nameFoods).removeValue();
+                        }
+                    });
                     OrderRef.child(nameFoods).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
